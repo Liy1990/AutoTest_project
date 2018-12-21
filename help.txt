@@ -1,0 +1,77 @@
+﻿selenium 安装环境
+需要安装firefox35.0的浏览器
+Firefox版本为48以上的需要匹配selenium3+驱动geckodriver
+       版本为48以下的需要匹配selenium2  此时内置驱动
+浏览器安装好后在线安装插件firebug firepath selenium IDE
+使用中的问题：文件处理方法
+打开 open（）
+file object=open(file name[,mode打开模式])
+打开模式包含 r-只读  rb-二进制只读  w-打开用于写入  a-打开后追加
+文件读取
+read-读取整个文件  readline-读一行   readlines-读所有行
+close 关闭文件
+xml查看节点属性时需导入  示例如下
+from xml.dom import minidom
+dom=minidom.parse('路径')     加载打开
+root=dom.documentElement      获取节点元素
+
+变量名a=root.getElementsByTagName("节点名")   读取文本节点
+变量名b=a[0].getAttribute("属性名")           读取属性节点值
+tags=root.getElementsByTagName('')            读取子节点
+
+多线程需导入    import  threading
+多进程需导入    import  multiprocessing
+
+浏览器操作：
+driver=webdriver.Firefox()       启动
+driver.get("网址")               打开
+driver.maximize_window()         最大化
+driver.set_windows_size(宽,高)   自定义大小
+driver.refresh()                 刷新
+driver.back()                    返回上一页
+driver.forward()                 向前一页
+driver.quit()                    退出
+
+元素定位：
+driver.find_element_by_name("值").send_keys("值")
+       name可以是（tag_name/class/link_text/xpath）  send_keys可以是click
+  css定位  find_element_by_css_selector()
+     括号中可接('#id')/('.class')/("[attribute='value']")
+     select定位下拉栏选项方法：
+         from selenium.webdriver.support.ui  import Select
+             select=["属性定位至标签"]
+             select.select_by_index(指针数)
+             select.select_by_visible_text("文本")
+             select.select_by_value("1")
+             ("标签名[属性='属性值']")
+鼠标和键盘操作：
+    鼠标需引入ActionChains类 from selenium.webdriver.common.action_chains import ActionChains
+          双击 ActionChains(driver).double_click(element).perform()
+          右击 ActionChains(driver).context_click(element).perform()
+          悬停 定义个above=driver.find_element_by_css_selector(".pf")
+               ActionChains(driver).move_to_element(above).perform()
+    键盘操作：from selenium.webdriver.common.keys import Keys
+              driver.find_element_by_css_selector("#kw").send_keys(keys.control,'a')
+警告弹窗处理：
+   driver=webdriver.Firefox()
+   driver.get("地址")
+   driver.find_element_by_link_text("设置").click()
+   driver.find_element_by_link_text("搜索设置").click()
+   driver.find_element_by_link_text("保存设置").click()
+   alert=driver.switch_to_alert()
+   alert.accept()
+   =========================================================================================================================
+    Alert(driver).accept()  # 等同于点击“确认”或“OK”
+    Alert(driver).dismiss()  # 等同于点击“取消”或“Cancel”
+    Alert(driver).authenticate(username,password)  # 验证，针对需要身份验证的alert，
+    Alert(driver).send_keys(keysToSend)  # 发送文本，对有提交需求的prompt框
+    Alert(driver).text  # 获取alert文本内容，对有信息显示的alert框
+   =========================================================================================================================
+文件上传：定位上传入口，然后send_keys("文件路径")
+滚动条操作：js="var action=documentElement.scrollTop=10000"    #使用js语言设置距顶部距离
+           driver.exeute_script(js)
+网页截图：driver.get_screenshot_as_file(r"地址/名称")
+cookie处理: cookie=driver.get_cookies()
+            driver.add_cookie({"'name':'51zxw','value':'www.51zxw.net'"})  成对加入cookie信息
+特疼
+            
